@@ -32,7 +32,7 @@ fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
     const data = JSON.parse(text);
 
 const IMAGE_BASE = "https://raw.githubusercontent.com/darphonbd/order/main/images/";
-const imgUrl = IMAGE_BASE + data.product + ".jpg";
+const imgUrl = IMAGE_BASE + data.product + ".JPG";
 
 document.getElementById("details").innerHTML = `
   <img src="${imgUrl}" width="200" style="border-radius:10px;"><br><br>
