@@ -31,7 +31,11 @@ fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
   .then(text => {
     const data = JSON.parse(text);
 
-    document.getElementById("details").innerHTML = `
+const imgUrl = IMAGE_BASE + data.product + ".jpg";
+
+document.getElementById("details").innerHTML = `
+  <img src="${imgUrl}" width="200" style="border-radius:10px;"><br><br>
+
   নাম: ${data.name}<br>
   প্রোডাক্ট: ${data.product} (${data.size})<br>
   মোট: ${data.total}<br>
