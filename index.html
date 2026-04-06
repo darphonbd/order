@@ -21,22 +21,15 @@ const params = new URLSearchParams(window.location.search);
 const row = params.get("row");
 const mobile = params.get("mobile");
 
-
-
 const API_URL = "https://script.google.com/macros/s/AKfycby23Lo-WA5TAzN8c36ot-PBKN0bWzREmrDlDALROTSXOMuTBtc2v1fusdlk1iKqngBM/exec";
-
-// 🔹 Load order details
-fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
-  .then(r => r.text())
-  .then(text => {
-    const data = JSON.parse(text);
 
 const IMAGE_BASE = "https://raw.githubusercontent.com/darphonbd/order/main/images/";
 
-const formats = ["JPG", "jpeg", "png", "webp"];
-
+// 🔹 Multi-format image loader
 function loadImage(product) {
+  const formats = ["JPG", "JPEG", "PNG", "WEBP"];
   let index = 0;
+
   const img = document.createElement("img");
   img.width = 200;
   img.style.borderRadius = "10px";
@@ -57,19 +50,24 @@ function loadImage(product) {
   return img;
 }
 
-const imageElement = loadImage(data.product);
+// 🔹 Load order details
+fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
+  .then(r => r.text())
+  .then(text => {
+    const data = JSON.parse(text);
 
-document.getElementById("details").innerHTML = `
-  <div id="imgBox"></div><br><br>
+    document.getElementById("details").innerHTML = `
+      <div id="imgBox"></div><br><br>
 
-  নাম: ${data.name}<br>
-  প্রোডাক্ট: ${data.product} (${data.size})<br>
-  মোট: ${data.total}<br>
-  ঠিকানা: ${data.address}<br>
-  স্ট্যাটাস: ${data.status}
-`;
+      নাম: ${data.name}<br>
+      প্রোডাক্ট: ${data.product} (${data.size})<br>
+      মোট: ${data.total}<br>
+      ঠিকানা: ${data.address}<br>
+      স্ট্যাটাস: ${data.status}
+    `;
 
-document.getElementById("imgBox").appendChild(imageElement);
+    const imageElement = loadImage(data.product);
+    document.getElementById("imgBox").appendChild(imageElement);
   });
 
 // 🔹 Update status
@@ -84,7 +82,9 @@ function update(action) {
       document.getElementById("status").innerText = data.message;
 
       // reload updated status
-      location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
     })
     .catch(err => {
       document.getElementById("status").innerText = "Error!";
