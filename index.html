@@ -21,7 +21,7 @@ const params = new URLSearchParams(window.location.search);
 const row = params.get("row");
 const mobile = params.get("mobile");
 
-const IMAGE_BASE = "https://raw.githubusercontent.com/darphonbd/order/main/images/";
+
 
 const API_URL = "https://script.google.com/macros/s/AKfycby23Lo-WA5TAzN8c36ot-PBKN0bWzREmrDlDALROTSXOMuTBtc2v1fusdlk1iKqngBM/exec";
 
@@ -31,6 +31,7 @@ fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
   .then(text => {
     const data = JSON.parse(text);
 
+const IMAGE_BASE = "https://raw.githubusercontent.com/darphonbd/order/main/images/";
 const imgUrl = IMAGE_BASE + data.product + ".jpg";
 
 document.getElementById("details").innerHTML = `
