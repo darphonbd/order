@@ -32,10 +32,35 @@ fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
     const data = JSON.parse(text);
 
 const IMAGE_BASE = "https://raw.githubusercontent.com/darphonbd/order/main/images/";
-const imgUrl = IMAGE_BASE + data.product + ".JPG";
+
+const formats = ["JPG", "jpeg", "png", "webp"];
+
+function loadImage(product) {
+  let index = 0;
+  const img = document.createElement("img");
+  img.width = 200;
+  img.style.borderRadius = "10px";
+
+  function tryNext() {
+    if (index >= formats.length) {
+      img.src = "https://via.placeholder.com/200?text=No+Image";
+      return;
+    }
+
+    img.src = IMAGE_BASE + product + "." + formats[index];
+    index++;
+
+    img.onerror = tryNext;
+  }
+
+  tryNext();
+  return img;
+}
+
+const imageElement = loadImage(data.product);
 
 document.getElementById("details").innerHTML = `
-  <img src="${imgUrl}" width="200" style="border-radius:10px;"><br><br>
+  <div id="imgBox"></div><br><br>
 
   নাম: ${data.name}<br>
   প্রোডাক্ট: ${data.product} (${data.size})<br>
@@ -43,6 +68,8 @@ document.getElementById("details").innerHTML = `
   ঠিকানা: ${data.address}<br>
   স্ট্যাটাস: ${data.status}
 `;
+
+document.getElementById("imgBox").appendChild(imageElement);
   });
 
 // 🔹 Update status
