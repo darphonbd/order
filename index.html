@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family:sans-serif; text-align:center; padding:30px;">
+
+<h2>🛍️ Order Confirmation</h2>
+
+<p id="status">Loading...</p>
+  <div id="details"></div>
+
+<button onclick="update('confirm')" style="padding:10px 20px;">✅ Confirm</button>
+<button onclick="update('cancel')" style="padding:10px 20px;">❌ Cancel</button>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const row = params.get("row");
+const mobile = params.get("mobile");
+
+const API_URL = "https://script.google.com/macros/s/AKfycbwhooKxKCdGX6xEnomds3SgSa3BCKVAqdVgHyE1X2OqaWi42RH_Xg9PwEWqvYG8isZE/exec";
+
+function update(action) {
+  document.getElementById("status").innerText = "Processing...";
+
+  fetch(`${API_URL}?row=${row}&mobile=${mobile}&action=${action}`)
+    .then(res => res.text())   // 🔥 change এখানে
+    .then(data => {
+      try {
+        const json = JSON.parse(data);
+        document.getElementById("status").innerText = json.message;
+      } catch (e) {
+        document.getElementById("status").innerText = data;
+      }
+    })
+    .catch(err => {
+      document.getElementById("status").innerText = "Error connecting server";
+    });
+}
+
+
+  function loadOrder() {
+  fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("details").innerHTML = `
+        নাম: ${data.name}<br>
+        প্রোডাক্ট: ${data.product} (${data.size})<br>
+        মূল্য: ${data.price}<br>
+        মোট: ${data.total}<br>
+        ঠিকানা: ${data.address}<br>
+        স্ট্যাটাস: ${data.status || "Pending"}
+      `;
+    });
+}
+
+loadOrder();
+</script>
+
+</body>
+</html>
