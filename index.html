@@ -21,6 +21,8 @@ const params = new URLSearchParams(window.location.search);
 const row = params.get("row");
 const mobile = params.get("mobile");
 
+const IMAGE_BASE = "https://darphonbd.github.io/order/images/";
+
 const API_URL = "https://script.google.com/macros/s/AKfycby23Lo-WA5TAzN8c36ot-PBKN0bWzREmrDlDALROTSXOMuTBtc2v1fusdlk1iKqngBM/exec";
 
 // 🔹 Load order details
@@ -30,12 +32,12 @@ fetch(`${API_URL}?row=${row}&mobile=${mobile}`)
     const data = JSON.parse(text);
 
     document.getElementById("details").innerHTML = `
-      নাম: ${data.name}<br>
-      প্রোডাক্ট: ${data.product} (${data.size})<br>
-      মোট: ${data.total}<br>
-      ঠিকানা: ${data.address}<br>
-      স্ট্যাটাস: ${data.status}
-    `;
+  নাম: ${data.name}<br>
+  প্রোডাক্ট: ${data.product} (${data.size})<br>
+  মোট: ${data.total}<br>
+  ঠিকানা: ${data.address}<br>
+  স্ট্যাটাস: ${data.status}
+`;
   });
 
 // 🔹 Update status
